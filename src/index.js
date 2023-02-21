@@ -52,6 +52,8 @@ async function onSearch(e) {
     }
     if (arrayImages.length >= 40) {
       refs.loadMoreWrapper.classList.remove('is-hidden');
+    } else {
+      refs.loadMoreWrapper.classList.add('is-hidden');
     }
 
     if (arrayImages.length === 0) {

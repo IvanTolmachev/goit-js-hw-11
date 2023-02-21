@@ -4,22 +4,50 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Homework 10</title>
+    <!-- <link rel="stylesheet" href="./css/styles.css" /> -->
+
+    <title>Homework 11</title>
   </head>
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        type="text"
-        name="searchQuery"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-      <button type="submit">Search</button>
-    </form>
-    <div class="gallery">
+    <div class="header">
+      <div class="form">
+        <form class="search-form" id="search-form">
+          <input
+            type="text"
+            name="searchQuery"
+            autocomplete="off"
+            placeholder="Search images..."
+            class="form-input"
+          />
+          <button type="submit" class="form__btn">
+            <svg class="form__img" width="20" height="20" aria-label="search">
+              <use href="./images/symbol.svg#icon-search"></use>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="gallery container">
       <!-- Карточки изображений -->
     </div>
 
+    <div class="wrapper is-hidden">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
+      <!-- <span>Loading</span> -->
+    </div>
+    <!-- <button type="button" class="load-more">Загрузить больше</button> -->
+
     <script src="index.js" type="module"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.js"></script> -->
   </body>
 </html>

@@ -36,7 +36,7 @@ refs.form.addEventListener('input', e => {
 
 async function onSearch(e) {
   e.preventDefault();
-  searchQuery = await e.currentTarget.elements.searchQuery.value.trim();
+  let searchQuery = await e.currentTarget.elements.searchQuery.value.trim();
   pixabaySerchImages.resetPage();
   pixabaySerchImages.query = searchQuery;
   const response = await pixabaySerchImages.getImages();

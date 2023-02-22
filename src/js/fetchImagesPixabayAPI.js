@@ -11,7 +11,7 @@ export default class PixabaySerchImages {
 
   async getImages() {
     try {
-      console.log(this);
+      // console.log(this);
 
       const requestData = await axios.get(BASE_URL, {
         params: {

@@ -18,15 +18,19 @@ const refs = {
 
 const pixabaySerchImages = new PixabaySerchImages();
 
-window.addEventListener('scroll', debounce(addFollowingList, DEBOUNCE_DELAY));
+window.addEventListener(
+  'scroll',
+  debounce(() => {
+    if (
+      refs.galleryEl.scrollTop + refs.galleryEl.clientHeight >=
+      refs.galleryEl.scrollHeight
+    ) {
+      addFollowingList();
+    }
+  }, DEBOUNCE_DELAY)
+);
 
 refs.form.addEventListener('submit', onSearch);
-refs.galleryEl.addEventListener('scroll', function () {
-  if (galleryEl.scrollTop + galleryEl.clientHeight >= galleryEl.scrollHeight) {
-    addFollowingList();
-  }
-});
-
 refs.form.addEventListener('input', e => {
   if (e.currentTarget.elements.searchQuery.value === '') {
     refs.galleryEl.innerHTML = '';
@@ -94,6 +98,14 @@ async function addFollowingList() {
     }
     getImagesEl(arrayImages);
     simpleLightbox.refresh();
+    const { height: cardHeight } = document
+      .querySelector('.gallery')
+      .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
   }
 }
 

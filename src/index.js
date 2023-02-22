@@ -21,12 +21,7 @@ const pixabaySerchImages = new PixabaySerchImages();
 window.addEventListener(
   'scroll',
   debounce(() => {
-    if (
-      refs.galleryEl.scrollTop + refs.galleryEl.clientHeight >=
-      refs.galleryEl.scrollHeight
-    ) {
-      addFollowingList();
-    }
+    addFollowingList();
   }, DEBOUNCE_DELAY)
 );
 
@@ -82,6 +77,9 @@ async function addFollowingList() {
   const scrolled = window.scrollY;
   const threshold = height - screenHeight / 4;
   const position = scrolled + screenHeight;
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
   if (position >= threshold) {
     pixabaySerchImages.incrementPage();
     const response = await pixabaySerchImages.getImages();
@@ -98,10 +96,6 @@ async function addFollowingList() {
     }
     getImagesEl(arrayImages);
     simpleLightbox.refresh();
-    const { height: cardHeight } = document
-      .querySelector('.gallery')
-      .firstElementChild.getBoundingClientRect();
-
     window.scrollBy({
       top: cardHeight * 2,
       behavior: 'smooth',

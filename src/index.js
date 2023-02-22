@@ -18,13 +18,6 @@ const refs = {
 
 const pixabaySerchImages = new PixabaySerchImages();
 
-window.addEventListener(
-  'scroll',
-  debounce(() => {
-    addFollowingList();
-  }, DEBOUNCE_DELAY)
-);
-
 refs.form.addEventListener('submit', onSearch);
 refs.form.addEventListener('input', e => {
   if (e.currentTarget.elements.searchQuery.value === '') {
@@ -50,6 +43,7 @@ async function onSearch(e) {
       return;
     }
     if (arrayImages.length >= 40) {
+      window.addEventListener('scroll', debounce(onScroll, DEBOUNCE_DELAY));
       refs.loadMoreWrapper.classList.remove('is-hidden');
     } else {
       refs.loadMoreWrapper.classList.add('is-hidden');
@@ -67,11 +61,30 @@ async function onSearch(e) {
     getImagesEl(arrayImages);
     simpleLightbox.refresh();
   } catch {
+    window.removeEventListener('scroll', onScroll);
     console.error('Something went wrong!');
   }
 }
 
 async function addFollowingList() {
+  pixabaySerchImages.incrementPage();
+  const response = await pixabaySerchImages.getImages();
+  const arrayImages = await response.hits;
+  const totalHits = await response.totalHits;
+  if (Math.ceil(totalHits / 40) === pixabaySerchImages.page) {
+    window.removeEventListener('scroll', onScroll);
+
+    refs.loadMoreWrapper.classList.add('is-hidden');
+    Notify.failure(
+      'happy end, no more images to load. Please enter a different search query'
+    );
+    return;
+  }
+  getImagesEl(arrayImages);
+  simpleLightbox.refresh();
+}
+
+function onScroll() {
   const height = document.body.offsetHeight;
   const screenHeight = window.innerHeight;
   const scrolled = window.scrollY;
@@ -81,20 +94,7 @@ async function addFollowingList() {
     .querySelector('.gallery')
     .firstElementChild.getBoundingClientRect();
   if (position >= threshold) {
-    pixabaySerchImages.incrementPage();
-    const response = await pixabaySerchImages.getImages();
-    const arrayImages = await response.hits;
-    const totalHits = await response.totalHits;
-
-    if (Math.ceil(totalHits / 40) === pixabaySerchImages.page) {
-      refs.loadMoreWrapper.classList.add('is-hidden');
-      Notify.failure(
-        'happy end, no more images to load. Please enter a different search query'
-      );
-
-      return;
-    }
-    getImagesEl(arrayImages);
+    addFollowingList();
     simpleLightbox.refresh();
     window.scrollBy({
       top: cardHeight * 2,
